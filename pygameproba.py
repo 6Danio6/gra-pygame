@@ -15,6 +15,8 @@ player = pygame.Rect(100,100,player_image.get_width(),player_image.get_height())
 
 tiles = [pygame.Rect(0,350,1000,50), pygame.Rect(300,300,100,25)]
 
+#git test
+
 def collision_test(rect, tiles):
     collisions = []
     for tile in tiles:
