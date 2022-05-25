@@ -1,6 +1,4 @@
-import pygame
-
-import settings
+import pygame, settings
 
 class Player:
     def __init__(self):
@@ -61,5 +59,4 @@ class Player:
 
     def draw(self):
         self.image = pygame.transform.flip(self.image,self.flip,False)
-        self.image.set_colorkey((34, 177, 76))
         settings.Display.blit(self.image,(self.picture_cords[0] ,self.picture_cords[1]))

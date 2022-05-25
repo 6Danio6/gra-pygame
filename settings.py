@@ -3,7 +3,7 @@ import pygame, os
 clock = pygame.time.Clock()
 Clock = pygame.time.Clock()
 
-#display stuff
+# display stuff
 
 window_size = [1280,720]
 
@@ -11,11 +11,13 @@ Display = pygame.Surface((640,360))
 
 screen = pygame.display.set_mode(window_size)
 
-#some_variables
+# extra
 
+icon = pygame.image.load("player_animations\idle\idle_0.png")
+pygame.display.set_icon(icon)
+pygame.display.set_caption("Couch Potato")
 
-
-#functions
+# functions
 
 def collision_test(rect, tiles):
     collisions = []
@@ -91,3 +93,6 @@ def load_animation(path, frame_durations):
             animation_frames.append(frame_image)
         n += 1
     return animation_frames
+
+def get_font(number, size):
+    return pygame.font.Font(f"fonts/font{number}.ttf", size)
