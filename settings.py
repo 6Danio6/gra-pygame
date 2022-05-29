@@ -17,6 +17,11 @@ icon = pygame.image.load("player_animations\idle\idle_0.png")
 pygame.display.set_icon(icon)
 pygame.display.set_caption("Couch Potato")
 
+saw_img = pygame.image.load("sawblade.png")
+saw_img = pygame.transform.scale(saw_img, (32,32))
+couch_img = pygame.image.load("couch.png")
+couch_img = pygame.transform.scale(couch_img, (32,32))
+
 # functions
 
 def collision_test(rect, tiles):
@@ -48,8 +53,16 @@ def move(rect,movement,tiles):
             collision_types['top'] = True
     return rect, collision_types
 
+def load_tiles():
+    tilepics = []
+    files = os.listdir("tiles")
+    files.sort(key=lambda f: int(''.join(filter(str.isdigit, f))))
+    for file in files:
+        tilepics.append(pygame.image.load("tiles/" + file))
+    return tilepics
+
 def load_map(path):
-    file = open(path + ".txt", "r")
+    file = open(path, "r")
     data = file.read()
     file.close()
     data = data.split("\n")
@@ -58,9 +71,11 @@ def load_map(path):
         game_map.append(row.split(" "))
     return(game_map)
 
-def display_map(game_map, tilepics):
+def display_map(game_map, tilepics):        #           1-53 = tiles        98 = saw        99 = couch
     tile_size = tilepics[0].get_width()
     tile_rects = []
+    saw_rects = []
+    couch_rect = []
     y = 0
     for row in game_map:
         x = 0
@@ -69,17 +84,16 @@ def display_map(game_map, tilepics):
                 if int(tile) == i+1:
                     Display.blit(tilepics[i],(x * tile_size, y * tile_size))
                     tile_rects.append(pygame.Rect(x * tile_size, y * tile_size, tile_size, tile_size))
+                    break
+            if int(tile) == 98:
+                Display.blit(saw_img,(x*tile_size, y*tile_size))
+                saw_rects.append(pygame.Rect(x*tile_size + 10 , y*tile_size + 10, tile_size - 20, tile_size - 20))
+            if int(tile) == 99:
+                Display.blit(couch_img,(x*tile_size, y*tile_size))
+                couch_rect.append(pygame.Rect(x*tile_size , y*tile_size, tile_size, tile_size))
             x += 1
         y += 1
-    return tile_rects
-
-def load_tiles():
-    tilepics = []
-    files = os.listdir("tiles")
-    files.sort(key=lambda f: int(''.join(filter(str.isdigit, f))))
-    for file in files:
-        tilepics.append(pygame.image.load("tiles/" + file))
-    return tilepics
+    return [tile_rects, saw_rects, couch_rect]
 
 def load_animation(path, frame_durations):
     animation_name = path.split("/")[-1]

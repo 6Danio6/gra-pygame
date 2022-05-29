@@ -1,11 +1,11 @@
-import pygame, settings
+import pygame, settings, menu
 
 class Player:
-    def __init__(self):
+    def __init__(self, player_x, player_y):
         self.image = pygame.image.load("player_animations\idle\idle_0.png")
         self.width = self.image.get_width()
         self.height = self.image.get_height()
-        self.hitbox = pygame.Rect(0,0,self.width,self.height)
+        self.hitbox = pygame.Rect(player_x,player_y,self.width,self.height)
         self.momentum = 0
         self.movement = [0,0]
         self.collisions = []
@@ -18,7 +18,7 @@ class Player:
         self.flip = False
         self.picture_cords = [0,0]
 
-    def tick(self, keys, tiles):
+    def tick(self, keys, tiles, saws, couch):
         self.picture_cords = [self.hitbox.x, self.hitbox.y]
         self.movement = [0,0]
         if keys[pygame.K_w]:
@@ -31,6 +31,7 @@ class Player:
         if keys[pygame.K_d]:
             self.movement[0] += self.speed
             self.flip = False
+
         self.hitbox = pygame.Rect(self.hitbox.x,self.hitbox.y,self.width,self.height)
         if self.momentum < 0:
             self.image = self.jump_animation[1]
@@ -40,6 +41,7 @@ class Player:
         self.momentum += 0.2
         if self.momentum > 4:
             self.momentum = 4
+            
         self.hitbox, self.collisions = settings.move(self.hitbox,self.movement,tiles)
         if self.collisions['top']:
             self.momentum = 0
@@ -56,6 +58,10 @@ class Player:
                 self.picture_cords[0] -= 13
                 self.picture_cords[1] -= 9
             self.current_frame += 1
+        if len(settings.collision_test(self.hitbox,saws)) > 0:
+            menu.Menu()
+        if len(settings.collision_test(self.hitbox,couch)) > 0:
+            menu.Menu()
 
     def draw(self):
         self.image = pygame.transform.flip(self.image,self.flip,False)

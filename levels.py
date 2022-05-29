@@ -38,7 +38,7 @@ def Levels():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if BUTTON_1.checkForInput(MENU_MOUSE_POS):
-                    gra.Gra(1)
+                    gra.Gra(1,20,120)
                 if BUTTON_2.checkForInput(MENU_MOUSE_POS):
                     gra.Gra(2)
                 if BUTTON_3.checkForInput(MENU_MOUSE_POS):
