@@ -21,6 +21,7 @@ saw_img = pygame.image.load("sawblade.png")
 saw_img = pygame.transform.scale(saw_img, (32,32))
 couch_img = pygame.image.load("couch.png")
 couch_img = pygame.transform.scale(couch_img, (32,32))
+angle = 0
 
 # functions
 
@@ -71,7 +72,7 @@ def load_map(path):
         game_map.append(row.split(" "))
     return(game_map)
 
-def display_map(game_map, tilepics):        #           1-53 = tiles        98 = saw        99 = couch
+def display_map(game_map, tilepics, angle):        #           1-53 = tiles        98 = saw        99 = couch
     tile_size = tilepics[0].get_width()
     tile_rects = []
     saw_rects = []
@@ -86,14 +87,15 @@ def display_map(game_map, tilepics):        #           1-53 = tiles        98 =
                     tile_rects.append(pygame.Rect(x * tile_size, y * tile_size, tile_size, tile_size))
                     break
             if int(tile) == 98:
-                Display.blit(saw_img,(x*tile_size, y*tile_size))
+                saw_img_copy = pygame.transform.rotate(saw_img,angle).copy()
+                Display.blit(saw_img_copy,(x*tile_size - int(saw_img_copy.get_width() / 2) + saw_img.get_width()/2, y*tile_size - int(saw_img_copy.get_height() / 2)+saw_img.get_height()/2))
                 saw_rects.append(pygame.Rect(x*tile_size + 10 , y*tile_size + 10, tile_size - 20, tile_size - 20))
             if int(tile) == 99:
                 Display.blit(couch_img,(x*tile_size, y*tile_size))
                 couch_rect.append(pygame.Rect(x*tile_size , y*tile_size, tile_size, tile_size))
             x += 1
         y += 1
-    return [tile_rects, saw_rects, couch_rect]
+    return tile_rects, saw_rects, couch_rect
 
 def load_animation(path, frame_durations):
     animation_name = path.split("/")[-1]

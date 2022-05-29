@@ -6,18 +6,16 @@ def Gra(map_number, player_x=0, player_y=0):
     tile_pics = settings.load_tiles()
     game_map = settings.load_map(f"maps/map{map_number}.txt")
     player = Player(player_x, player_y)
-    tiles = settings.display_map(game_map, tile_pics)[0]
-    saws = settings.display_map(game_map, tile_pics)[1]
-    couch = settings.display_map(game_map, tile_pics)[2]
+    tiles, saws, couch = settings.display_map(game_map, tile_pics, settings.angle)
     while True:
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
 
         settings.Display.fill((140, 255, 234))
 
+        settings.angle -= 2
+
         keys = pygame.key.get_pressed()
-        tiles = settings.display_map(game_map, tile_pics)[0]
-        saws = settings.display_map(game_map, tile_pics)[1]
-        couch = settings.display_map(game_map, tile_pics)[2]
+        tiles, saws, couch = settings.display_map(game_map, tile_pics, settings.angle)
 
         player.tick(keys, tiles, saws, couch)
         player.draw()
