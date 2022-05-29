@@ -2,9 +2,9 @@ import pygame, settings, sys, menu
 from button import Button
 from kartofel import Player
 
-def Gra():
+def Gra(map_number):
     tile_pics = settings.load_tiles()
-    game_map = settings.load_map("map")
+    game_map = settings.load_map(f"maps/map{map_number}")
     player = Player()
     tiles = []
     while True:

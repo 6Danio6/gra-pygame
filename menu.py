@@ -1,9 +1,9 @@
 from button import Button
-import pygame, settings, sys, gra
+import pygame, settings, sys, gra, levels
 
 def Menu():
     while True:
-        bg = pygame.image.load("backgrounds/bg4.png")
+        bg = pygame.image.load("backgrounds/bg5.png")
         bg = pygame.transform.scale(bg, (settings.window_size[0],settings.window_size[1]))
         settings.screen.blit(bg, (0, 0))
 
@@ -32,9 +32,9 @@ def Menu():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    gra.Gra()
+                    levels.Levels()
                 if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    gra.Gra()
+                    gra.Gra(1)
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
                     sys.exit()
