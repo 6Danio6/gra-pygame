@@ -1,4 +1,4 @@
-import pygame, settings, menu
+import pygame, settings, menu, time
 
 class Player:
     def __init__(self, player_x, player_y):
@@ -17,8 +17,9 @@ class Player:
         self.current_frame = 0
         self.flip = False
         self.picture_cords = [0,0]
+        self.potato_image = pygame.image.load("on_couch_potato.png")
 
-    def tick(self, keys, tiles, saws, couch):
+    def tick(self, keys, tiles, saws, spikes,couch):
         self.picture_cords = [self.hitbox.x, self.hitbox.y]
         self.movement = [0,0]
         if keys[pygame.K_w]:
@@ -60,9 +61,12 @@ class Player:
             self.current_frame += 1
         if len(settings.collision_test(self.hitbox,saws)) > 0:
             menu.Menu()
+        if len(settings.collision_test(self.hitbox,spikes)) > 0:
+            menu.Menu()
         if len(settings.collision_test(self.hitbox,couch)) > 0:
+            settings.Display.blit(self.potato_image,(self.picture_cords[0]-2 ,self.picture_cords[1]+4))
             menu.Menu()
 
     def draw(self):
         self.image = pygame.transform.flip(self.image,self.flip,False)
-        settings.Display.blit(self.image,(self.picture_cords[0] ,self.picture_cords[1]))
+        settings.Display.blit(self.image,(self.picture_cords[0] - settings.scroll[0] ,self.picture_cords[1] - settings.scroll[1]))

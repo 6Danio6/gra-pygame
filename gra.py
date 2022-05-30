@@ -6,18 +6,20 @@ def Gra(map_number, player_x=0, player_y=0):
     tile_pics = settings.load_tiles()
     game_map = settings.load_map(f"maps/map{map_number}.txt")
     player = Player(player_x, player_y)
-    tiles, saws, couch = settings.display_map(game_map, tile_pics, settings.angle)
+    tiles, saws, couch, spikes = settings.display_map(game_map, tile_pics, settings.angle)
     while True:
         PLAY_MOUSE_POS = pygame.mouse.get_pos()
 
         settings.Display.fill((140, 255, 234))
 
         settings.angle -= 2
+        settings.scroll[0] += (player.hitbox.x - settings.scroll[0] - 300)
+        settings.scroll[1] += (player.hitbox.y - settings.scroll[1] - 152)
 
         keys = pygame.key.get_pressed()
-        tiles, saws, couch = settings.display_map(game_map, tile_pics, settings.angle)
+        tiles, saws, couch, spikes = settings.display_map(game_map, tile_pics, settings.angle)
 
-        player.tick(keys, tiles, saws, couch)
+        player.tick(keys, tiles, saws, spikes, couch)
         player.draw()
 
         PLAY_BACK = Button(image=None, pos=(120, 40), text_input="BACK", font=settings.get_font(1,60), base_color="White", hovering_color="Green")

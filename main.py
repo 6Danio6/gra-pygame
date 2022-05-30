@@ -1,9 +1,9 @@
 import pygame
-from menu import Menu
+import settings
 
 pygame.init()
 
 def main():
-    Menu()
+    settings.intro()
 if __name__ == "__main__":
     main()

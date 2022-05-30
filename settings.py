@@ -1,4 +1,4 @@
-import pygame, os
+import pygame, os, settings, menu
 
 clock = pygame.time.Clock()
 Clock = pygame.time.Clock()
@@ -13,15 +13,18 @@ screen = pygame.display.set_mode(window_size)
 
 # extra
 
-icon = pygame.image.load("player_animations\idle\idle_0.png")
-pygame.display.set_icon(icon)
+pygame.display.set_icon(pygame.image.load("player_animations\idle\idle_0.png"))
 pygame.display.set_caption("Couch Potato")
+
+# variables
 
 saw_img = pygame.image.load("sawblade.png")
 saw_img = pygame.transform.scale(saw_img, (32,32))
 couch_img = pygame.image.load("couch.png")
-couch_img = pygame.transform.scale(couch_img, (32,32))
-angle = 0
+
+angle=0
+
+scroll = [0,0]
 
 # functions
 
@@ -72,30 +75,34 @@ def load_map(path):
         game_map.append(row.split(" "))
     return(game_map)
 
-def display_map(game_map, tilepics, angle):        #           1-53 = tiles        98 = saw        99 = couch
+def display_map(game_map, tilepics, angle):        #           1-55 = tiles        98 = saw        99 = couch
     tile_size = tilepics[0].get_width()
     tile_rects = []
     saw_rects = []
     couch_rect = []
+    spike_rects = []
     y = 0
     for row in game_map:
         x = 0
         for tile in row:
             for i in range(len(tilepics)):
-                if int(tile) == i+1:
-                    Display.blit(tilepics[i],(x * tile_size, y * tile_size))
+                if int(tile) == i+1 and i + 1 < 56:
+                    Display.blit(tilepics[i],(x * tile_size - settings.scroll[0], y * tile_size - settings.scroll[1]))
                     tile_rects.append(pygame.Rect(x * tile_size, y * tile_size, tile_size, tile_size))
                     break
+                elif int(tile) == i + 1:
+                    Display.blit(tilepics[i],(x * tile_size - settings.scroll[0], y * tile_size - settings.scroll[1]))
+                    spike_rects.append(pygame.Rect(x * tile_size, y * tile_size, tile_size, tile_size))
             if int(tile) == 98:
                 saw_img_copy = pygame.transform.rotate(saw_img,angle).copy()
-                Display.blit(saw_img_copy,(x*tile_size - int(saw_img_copy.get_width() / 2) + saw_img.get_width()/2, y*tile_size - int(saw_img_copy.get_height() / 2)+saw_img.get_height()/2))
+                Display.blit(saw_img_copy,((x*tile_size - int(saw_img_copy.get_width() / 2) + saw_img.get_width()/2) - settings.scroll[0], (y*tile_size - int(saw_img_copy.get_height() / 2)+saw_img.get_height()/2) - settings.scroll[1]))
                 saw_rects.append(pygame.Rect(x*tile_size + 10 , y*tile_size + 10, tile_size - 20, tile_size - 20))
             if int(tile) == 99:
-                Display.blit(couch_img,(x*tile_size, y*tile_size))
-                couch_rect.append(pygame.Rect(x*tile_size , y*tile_size, tile_size, tile_size))
+                Display.blit(couch_img,((x*tile_size+3) - settings.scroll[0] , (y*tile_size+4) - settings.scroll[1]))
+                couch_rect.append(pygame.Rect(x*tile_size , y*tile_size, couch_img.get_width(), couch_img.get_height()))
             x += 1
         y += 1
-    return tile_rects, saw_rects, couch_rect
+    return tile_rects, saw_rects, couch_rect, spike_rects
 
 def load_animation(path, frame_durations):
     animation_name = path.split("/")[-1]
@@ -112,3 +119,26 @@ def load_animation(path, frame_durations):
 
 def get_font(number, size):
     return pygame.font.Font(f"fonts/font{number}.ttf", size)
+
+def load_intro(path, frame_durations):
+    intro_frames = []
+    n = 1
+    for frame in frame_durations:
+        if n < 10:
+            img_loc = path + "/" + "0000" + str(n) + ".png"
+        else:
+            img_loc = path + "/" + "000" + str(n) + ".png"
+        frame_image = pygame.image.load(img_loc)
+        for i in range(frame):
+            intro_frames.append(frame_image)
+        n += 1
+    return intro_frames
+
+def intro():
+    intro = load_intro("intro", [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6])
+    for frame in intro:
+        Display.blit(frame, (0,0))
+        screen.blit(pygame.transform.scale(Display,(window_size)),(0,0))
+        pygame.display.update()
+        clock.tick(60)
+    menu.Menu()
