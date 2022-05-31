@@ -1,3 +1,4 @@
+import pygame
 class Button():
 	def __init__(self, image, pos, text_input, font, base_color, hovering_color):
 		self.image = image
@@ -22,8 +23,8 @@ class Button():
 			return True
 		return False
 
-	def changeColor(self, position):
+	def changeColor(self, position, button1=None, button2=None):
 		if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-			self.text = self.font.render(self.text_input, True, self.hovering_color)
+			self.image = button2
 		else:
-			self.text = self.font.render(self.text_input, True, self.base_color)
+			self.image = button1

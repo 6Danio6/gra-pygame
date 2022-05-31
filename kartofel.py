@@ -10,7 +10,7 @@ class Player:
         self.movement = [0,0]
         self.collisions = []
         self.speed = 4
-        self.jump_power = 6
+        self.jump_power = 7.5
         self.idle_animation = settings.load_animation("player_animations/idle", [20,20])
         self.run_animation = settings.load_animation("player_animations/run", [6,6,6,6,6,6,6,6])
         self.jump_animation = settings.load_animation("player_animations/jump", [1,1,1])
@@ -25,7 +25,7 @@ class Player:
         if keys[pygame.K_w]:
             if self.collisions['bottom']:
                 self.momentum = 0
-                self.momentum -= self.jump_power
+                self.momentum = -self.jump_power
         if keys[pygame.K_a]:
             self.movement[0] -= self.speed
             self.flip = True
@@ -39,9 +39,9 @@ class Player:
         elif self.momentum > 0:
             self.image = self.jump_animation[2]
         self.movement[1] += self.momentum
-        self.momentum += 0.2
-        if self.momentum > 4:
-            self.momentum = 4
+        self.momentum += 0.3
+        if self.momentum > 6:
+            self.momentum = 6
             
         self.hitbox, self.collisions = settings.move(self.hitbox,self.movement,tiles)
         if self.collisions['top']:

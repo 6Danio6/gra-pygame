@@ -1,4 +1,5 @@
-import pygame, os, settings, menu
+import pygame, os, settings, menu, time
+from gra import Gra
 
 clock = pygame.time.Clock()
 Clock = pygame.time.Clock()
@@ -23,8 +24,8 @@ saw_img = pygame.transform.scale(saw_img, (32,32))
 couch_img = pygame.image.load("couch.png")
 
 angle=0
-
 scroll = [0,0]
+volume = 100
 
 # functions
 
@@ -83,6 +84,8 @@ def display_map(game_map, tilepics, angle):        #           1-55 = tiles     
     spike_rects = []
     y = 0
     for row in game_map:
+        if row == game_map[-1]:
+            break
         x = 0
         for tile in row:
             for i in range(len(tilepics)):
@@ -142,3 +145,32 @@ def intro():
         pygame.display.update()
         clock.tick(60)
     menu.Menu()
+
+def load_map_player_cords(map_num):
+    file = open("maps/map" + str(map_num) +  ".txt", "r")
+    data = file.read()
+    file.close()
+    data = data.split("\n")
+    player_cords = []
+    player_cords = data[-1].split(" ")
+    player_x = player_cords[0]
+    player_y = player_cords[1]
+    return player_x, player_y
+
+def you_dead(map_number):
+    img = pygame.image.load("you_dead.png")
+    maklowicz = pygame.mixer.Sound("maklowicz_i_koperkowy_pies.wav")
+    Display.blit(img,(201,95))
+    screen.blit(pygame.transform.scale(Display,(window_size)),(0,0))
+    pygame.display.update()
+    maklowicz.play()
+    time.sleep(3)
+    Gra(map_number)
+
+def next_lvl(current_map_number):
+    img = pygame.image.load("you_dead.png")
+    Display.blit(img,(201,95))
+    screen.blit(pygame.transform.scale(Display,(window_size)),(0,0))
+    pygame.display.update()
+    time.sleep(3)
+    Gra(current_map_number + 1)

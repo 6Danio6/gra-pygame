@@ -13,8 +13,8 @@ def Gra(map_number, player_x=0, player_y=0):
         settings.Display.fill((140, 255, 234))
 
         settings.angle -= 2
-        settings.scroll[0] += (player.hitbox.x - settings.scroll[0] - 300)
-        settings.scroll[1] += (player.hitbox.y - settings.scroll[1] - 152)
+        settings.scroll[0] += int((player.hitbox.x - settings.scroll[0] - 300)/10)
+        settings.scroll[1] += int((player.hitbox.y - settings.scroll[1] - 152)/10)
 
         keys = pygame.key.get_pressed()
         tiles, saws, couch, spikes = settings.display_map(game_map, tile_pics, settings.angle)
@@ -23,14 +23,13 @@ def Gra(map_number, player_x=0, player_y=0):
         player.draw()
 
         PLAY_BACK = Button(image=None, pos=(120, 40), text_input="BACK", font=settings.get_font(1,60), base_color="White", hovering_color="Green")
-        PLAY_BACK.changeColor(PLAY_MOUSE_POS)
 
         settings.screen.blit(pygame.transform.scale(settings.Display,(settings.window_size)),(0,0))
         
         PLAY_BACK.update(settings.screen)
         pygame.display.update()
         settings.Clock.tick(60)
-        #print(settings.Clock.get_fps())
+        print(settings.Clock.get_fps())
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
