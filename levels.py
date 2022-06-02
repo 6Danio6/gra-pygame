@@ -39,18 +39,25 @@ def Levels():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if BUTTON_1.checkForInput(MENU_MOUSE_POS, ):
-                    gra.Gra(1,20,120)
+                    settings.sounds[1].play()
+                    gra.Gra(1)
                 if BUTTON_2.checkForInput(MENU_MOUSE_POS):
+                    settings.sounds[1].play()
                     gra.Gra(2)
                 if BUTTON_3.checkForInput(MENU_MOUSE_POS):
+                    settings.sounds[1].play()
                     gra.Gra(3)
                 if BUTTON_4.checkForInput(MENU_MOUSE_POS):
+                    settings.sounds[1].play()
                     gra.Gra(4)
                 if BUTTON_5.checkForInput(MENU_MOUSE_POS):
+                    settings.sounds[1].play()
                     gra.Gra(5)
                 if BUTTON_6.checkForInput(MENU_MOUSE_POS):
+                    settings.sounds[1].play()
                     gra.Gra(6)
                 if PLAY_BACK.checkForInput(MENU_MOUSE_POS):
+                    settings.sounds[1].play()
                     menu.Menu()
 
         pygame.display.update()

@@ -6,6 +6,8 @@ button_2 = pygame.image.load("buttons/button_over.png")
 
 def Menu():
     while True:
+        settings.set_all_volume(settings.sounds, settings.volume)
+        pygame.mixer.music.set_volume(settings.volume/100)
         bg = pygame.image.load("backgrounds/bg5.png")
         bg = pygame.transform.scale(bg, (settings.window_size[0],settings.window_size[1]))
         settings.screen.blit(bg, (0, 0))
@@ -38,11 +40,14 @@ def Menu():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    settings.sounds[1].play()
                     levels.Levels()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    settings.sounds[1].play()
                     pygame.quit()
                     sys.exit()
                 if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    settings.sounds[1].play()
                     options.Options()
 
         pygame.display.update() 

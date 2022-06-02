@@ -1,7 +1,7 @@
 import pygame, settings, menu, time
 
 class Player:
-    def __init__(self, player_x, player_y):
+    def __init__(self, player_x, player_y, map_number):
         self.image = pygame.image.load("player_animations\idle\idle_0.png")
         self.width = self.image.get_width()
         self.height = self.image.get_height()
@@ -12,19 +12,21 @@ class Player:
         self.speed = 4
         self.jump_power = 7.5
         self.idle_animation = settings.load_animation("player_animations/idle", [20,20])
-        self.run_animation = settings.load_animation("player_animations/run", [6,6,6,6,6,6,6,6])
+        self.run_animation = settings.load_animation("player_animations/run", [5,5,5,5,5,5,5,5])
         self.jump_animation = settings.load_animation("player_animations/jump", [1,1,1])
         self.current_frame = 0
         self.flip = False
         self.picture_cords = [0,0]
-        self.potato_image = pygame.image.load("on_couch_potato.png")
+        self.map_number = map_number
+        self.collisions = {'top': False, 'bottom': False, 'right': False, 'left': False}
 
-    def tick(self, keys, tiles, saws, spikes,couch):
+    def tick(self, keys, tiles, saws, spikes,couch, border):
         self.picture_cords = [self.hitbox.x, self.hitbox.y]
         self.movement = [0,0]
         if keys[pygame.K_w]:
             if self.collisions['bottom']:
                 self.momentum = 0
+                settings.sounds[2].play()
                 self.momentum = -self.jump_power
         if keys[pygame.K_a]:
             self.movement[0] -= self.speed
@@ -40,9 +42,9 @@ class Player:
             self.image = self.jump_animation[2]
         self.movement[1] += self.momentum
         self.momentum += 0.3
-        if self.momentum > 6:
-            self.momentum = 6
-            
+        if self.momentum > 8:
+            self.momentum = 8
+        
         self.hitbox, self.collisions = settings.move(self.hitbox,self.movement,tiles)
         if self.collisions['top']:
             self.momentum = 0
@@ -57,15 +59,20 @@ class Player:
                     self.current_frame = 0
                 self.image = self.run_animation[self.current_frame]
                 self.picture_cords[0] -= 13
-                self.picture_cords[1] -= 9
+                self.picture_cords[1] -= 8
             self.current_frame += 1
         if len(settings.collision_test(self.hitbox,saws)) > 0:
-            menu.Menu()
+            self.movement[0] = 0
+            settings.you_dead(self.map_number)
         if len(settings.collision_test(self.hitbox,spikes)) > 0:
-            menu.Menu()
+            self.movement[0] = 0
+            settings.you_dead(self.map_number)
         if len(settings.collision_test(self.hitbox,couch)) > 0:
-            settings.Display.blit(self.potato_image,(self.picture_cords[0]-2 ,self.picture_cords[1]+4))
-            menu.Menu()
+            self.movement[0] = 0
+            settings.next_lvl(self.map_number)
+        if self.hitbox.y > 32 * border:
+            self.movement[0] = 0
+            settings.you_dead(self.map_number)
 
     def draw(self):
         self.image = pygame.transform.flip(self.image,self.flip,False)

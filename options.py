@@ -9,6 +9,7 @@ minus_1 = pygame.image.load("buttons/minus1.png")
 minus_2 = pygame.image.load("buttons/minus2.png")
 
 def Options():
+    file = open("volume.txt", "w")
     while True:
         bg = pygame.image.load("backgrounds/bg5.png")
         bg = pygame.transform.scale(bg, (settings.window_size[0],settings.window_size[1]))
@@ -18,7 +19,6 @@ def Options():
 
         MENU_TEXT = settings.get_font(1,100).render("OPTIONS", False, "#ffffff")
         MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
-
         volume1_text = settings.get_font(2,60).render("Volume", False, "#ffffff")
         volume1_rect = volume1_text.get_rect(center=(640, 270))
         volume2_text = settings.get_font(2,60).render(f"{settings.volume}%", False, "#ffffff")
@@ -47,16 +47,29 @@ def Options():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                settings.sounds[1].play()
+                file.truncate(0)
+                file.write(str(settings.volume))
+                file.close()
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    settings.sounds[1].play()
+                    file.truncate(0)
+                    file.write(str(settings.volume))
+                    file.close()
                     menu.Menu()
                 if MINUS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    settings.sounds[1].play()
                     if settings.volume > 0:
-                        settings.volume -= 20
+                        settings.volume -= 10
                 if PLUS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    settings.sounds[1].play()
                     if settings.volume < 100:
-                        settings.volume += 20
+                        settings.volume += 10
 
-        pygame.display.update() 
+        settings.set_all_volume(settings.sounds, settings.volume)
+        pygame.mixer.music.set_volume(settings.volume/100)
+
+        pygame.display.update()
