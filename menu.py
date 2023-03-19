@@ -1,10 +1,15 @@
 from button import Button
 import pygame, settings, sys, levels, options
+from main import rpc, czas
 
 button_1 = pygame.image.load("buttons/button_normal.png")
 button_2 = pygame.image.load("buttons/button_over.png")
 
 def Menu():
+    rpc.update(
+    state = "siedzi w menu",
+    large_image = "couchpotato",
+    start = czas)
     while True:
         settings.set_all_volume(settings.sounds, settings.volume)
         pygame.mixer.music.set_volume(settings.volume/100)

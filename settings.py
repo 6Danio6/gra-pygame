@@ -29,12 +29,12 @@ angle=0
 scroll = [0,0]
 
 file = open("volume.txt", "r")
-data = file.read()
+volume_data = file.read()
 file.close()
 
 # sounds and musics stuff
 
-volume = int(data)
+volume = int(volume_data)
 sounds = []
 
 # functions
@@ -150,7 +150,7 @@ def load_intro(path, frame_durations):
 def intro():
     intro = load_intro("intro", [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6])
     settings.sounds = settings.load_sounds()
-    pygame.mixer.music.load("musics/among_us_drip_theme_song_original_among_us_trap_remix_amogus_meme_music.wav")
+    pygame.mixer.music.load("music/among_us_drip_theme_song_original_among_us_trap_remix_amogus_meme_music.wav")
     pygame.mixer.music.set_volume(settings.volume/100)
     pygame.mixer.music.play(-1)
     for frame in intro:

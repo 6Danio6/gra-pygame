@@ -1,8 +1,14 @@
 import pygame, settings, sys, menu
 from button import Button
 from kartofel import Player
+from main import rpc, czas
 
 def Gra(map_number):
+    rpc.update(
+    state = "przechodzi level "+ str(map_number),
+    large_image = "couchpotato",
+    start = czas)
+
     tile_pics = settings.load_tiles()
     game_map = settings.load_map(f"maps/map{map_number}.txt")
     player_x, player_y = settings.load_map_player_cords(map_number)

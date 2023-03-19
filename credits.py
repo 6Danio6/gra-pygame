@@ -1,10 +1,15 @@
 from button import Button
 import pygame, settings, sys, menu
+from main import rpc, czas
 
 button_1 = pygame.image.load("buttons/button_normal.png")
 button_2 = pygame.image.load("buttons/button_over.png")
 
 def Credits():
+    rpc.update(
+    state = "zdobyl esse",
+    large_image = "couchpotato",
+    start = czas)
     while True:
         bg = pygame.image.load("backgrounds/bg5.png")
         bg = pygame.transform.scale(bg, (settings.window_size[0],settings.window_size[1]))

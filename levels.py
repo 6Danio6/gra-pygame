@@ -1,9 +1,14 @@
 from button import Button
 import pygame, settings, sys, gra, menu
+from main import rpc, czas
 
 buttonimg = pygame.image.load("buttons/square.png")
 
 def Levels():
+    rpc.update(
+    state = "wybiera poziom",
+    large_image = "couchpotato",
+    start = czas)
     while True:
         bg = pygame.image.load("backgrounds/bg5.png")
         bg = pygame.transform.scale(bg, (settings.window_size[0],settings.window_size[1]))
